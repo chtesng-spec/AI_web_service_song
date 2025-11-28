@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cute Nickname Maker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    
+    <style>
+        /* [Design Concept: Cute & Pastel] */
+        :root {
+            --bg-color: #ffffff;
+            --card-bg: #fff0f5; /* 연한 핑크 */
+            --primary-color: #ff99cc; /* 핫핑크 포인트 */
+            --secondary-color: #ffb6c1; /* 버튼 배경 */
+            --text-color: #555555; /* 부드러운 회색 */
+            --border-radius: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Jua', sans-serif; /* 귀여운 폰트 적용 */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            
+            /* [배경 패턴] 귀여운 곰돌이 패턴 (SVG Data URI 사용) */
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='20' text-anchor='middle' dominant-baseline='middle' fill='%23ffccdd'%3E🐻%3C/text%3E%3C/svg%3E");
+            background-size: 80px 80px; /* 패턴 간격 조절 */
+        }
+
+        /* 메인 카드 컨테이너 */
+        .cute-card {
+            background-color: white;
+            width: 90%;
+            max-width: 450px;
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 20px rgba(255, 182, 193, 0.4);
+            border: 4px dashed var(--primary-color); /* 점선 테두리 */
+            text-align: center;
+            position: relative;
+        }
+
+        /* 헤더 스타일 */
+        h1 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+
+        /* 입력 필드 & 셀렉트 박스 공통 */
+        input[type="text"], 
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #fffafa;
+            border: 2px solid #ffdde5;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            color: #555;
+            outline: none;
+            transition: all 0.3s;
+            appearance: none; /* 브라우저 기본 스타일 제거 */
+        }
+
+        /* 셀렉트 박스 화살표 커스텀 */
+        select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff99cc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 8px rgba(255, 153, 204, 0.3);
+        }
+
+        /* 버튼 스타일 */
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            color: white;
+            margin-top: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            box-shadow: 0 4px 0 #ff66a3; /* 입체감 */
+        }
+
+        .btn-primary:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background-color: #a0aec0;
+            font-size: 1rem;
+            padding: 10px;
+            box-shadow: 0 4px 0 #718096;
+        }
+
+        .btn-secondary:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        /* 결과 영역 */
+        #result-area {
+            display: none;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #fff0f5;
+            border-radius: 15px;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .result-label {
+            font-size: 1rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-value {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div class="cute-card">
+        <h1>✨ 닉네임 공작소 ✨</h1>
+
+        <div id="input-section">
+            <div class="form-group">
+                <label for="description">어떤 느낌을 원해? (키워드)</label>
+                <input type="text" id="description" placeholder="예: 뽀짝한 아기토끼" autocomplete="off" onkeypress="if(event.keyCode==13) register()">
+            </div>
+
+            <div class="form-group">
+                <label for="length">글자 수 (최대 8자)</label>
+                <select id="length">
+                    <option value="1">1글자</option>
+                    <option value="2">2글자</option>
+                    <option value="3" selected>3글자</option>
+                    <option value="4">4글자</option>
+                    <option value="5">5글자</option>
+                    <option value="6">6글자</option>
+                    <option value="7">7글자</option>
+                    <option value="8">8글자</option>
+                </select>
+            </div>
+
+            <button class="btn btn-primary" onclick="register()">이름 만들어줘! 🪄</button>
+        </div>
+
+        <div id="result-area">
+            <div class="result-label">짜잔! 생성된 닉네임이야</div>
+            <div class="result-value" id="generated-name">Unknown</div>
+            <button class="btn btn-secondary" onclick="resetForm()">다시 만들기</button>
+        </div>
+    </div>
+
+    <script>
+        // [핵심 요구 사항] API 서버 주소 정의 (현재 비워둠)
+        const SERVER_URL = ""; 
+
+        async function register() {
+            const descriptionInput = document.getElementById('description');
+            const lengthSelect = document.getElementById('length');
+            
+            const description = descriptionInput.value.trim();
+            const length = parseInt(lengthSelect.value); // Select 값 가져오기
+
+            if (!description) {
+                alert("내용을 입력해줘! 😊");
+                descriptionInput.focus();
+                return;
+            }
+
+            // 전송 데이터 구성
+            const requestData = {
+                description: description,
+                targetLength: length
+            };
+
+            // 버튼 상태 변경 (UX)
+            const btn = document.querySelector('.btn-primary');
+            const originalText = btn.innerText;
+            btn.innerText = "생각하는 중...🤔";
+
+            try {
+                // [핵심 요구 사항] POST Fetch 구조
+                const response = await fetch(SERVER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestData)
+                });
+
+                if (!response.ok) throw new Error("Server Error");
+
+                const result = await response.json();
+                showResult(result.nickname);
+
+            } catch (error) {
+                // [요청 사항 반영] 오류 발생 시(서버 없음) "TEST TYPE" 결과 반환
+                console.log("서버 연결 안됨: 테스트 모드 결과 출력");
+                
+                // 잠시 딜레이 후 테스트 결과 출력
+                setTimeout(() => {
+                    showResult("Test_Result"); // 고정된 테스트 값
+                    btn.innerText = originalText;
+                }, 300);
+            }
+        }
+
+        function showResult(nickname) {
+            document.getElementById('input-section').classList.add('hidden');
+            document.getElementById('result-area').style.display = 'block';
+            document.getElementById('generated-name').textContent = nickname;
+        }
+
+        function resetForm() {
+            document.getElementById('result-area').style.display = 'none';
+            document.getElementById('input-section').classList.remove('hidden');
+            document.getElementById('description').value = '';
+            document.getElementById('description').focus();
+            document.querySelector('.btn-primary').innerText = "이름 만들어줘! 🪄";
+        }
+    </script>
+</body>
+</html>
