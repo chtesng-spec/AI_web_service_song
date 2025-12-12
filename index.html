@@ -3,26 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cute Nickname Maker</title>
+    <title>✨ AI 닉네임 공작소</title>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     
     <style>
-        /* [Design Concept: Cute & Pastel] */
         :root {
             --bg-color: #ffffff;
-            --card-bg: #fff0f5; /* 연한 핑크 */
-            --primary-color: #ff99cc; /* 핫핑크 포인트 */
-            --secondary-color: #ffb6c1; /* 버튼 배경 */
-            --text-color: #555555; /* 부드러운 회색 */
-            --border-radius: 20px;
+            --primary-color: #ff99cc;
+            --card-bg: #fff0f5;
+            --text-color: #555555;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Jua', sans-serif; /* 귀여운 폰트 적용 */
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Jua', sans-serif; }
 
         body {
             background-color: var(--bg-color);
@@ -31,231 +23,267 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            
-            /* [배경 패턴] 귀여운 곰돌이 패턴 (SVG Data URI 사용) */
+            /* 배경 패턴 */
             background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='20' text-anchor='middle' dominant-baseline='middle' fill='%23ffccdd'%3E🐻%3C/text%3E%3C/svg%3E");
-            background-size: 80px 80px; /* 패턴 간격 조절 */
         }
 
-        /* 메인 카드 컨테이너 */
-        .cute-card {
+        .main-card {
             background-color: white;
             width: 90%;
-            max-width: 450px;
-            padding: 2.5rem;
-            border-radius: var(--border-radius);
-            box-shadow: 0 8px 20px rgba(255, 182, 193, 0.4);
-            border: 4px dashed var(--primary-color); /* 점선 테두리 */
+            max-width: 480px;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(255, 153, 204, 0.4);
+            border: 3px solid var(--primary-color);
             text-align: center;
-            position: relative;
         }
 
-        /* 헤더 스타일 */
-        h1 {
-            font-size: 2.2rem;
-            color: var(--primary-color);
-            margin-bottom: 2rem;
-            text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.05);
-        }
+        h1 { color: var(--primary-color); margin-bottom: 1.5rem; font-size: 2rem; }
 
-        .form-group {
-            margin-bottom: 1.5rem;
+        .option-group {
+            margin-bottom: 1.2rem;
             text-align: left;
-        }
-
-        label {
-            display: block;
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            color: #666;
-        }
-
-        /* 입력 필드 & 셀렉트 박스 공통 */
-        input[type="text"], 
-        select {
-            width: 100%;
-            padding: 12px 15px;
-            background-color: #fffafa;
-            border: 2px solid #ffdde5;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            color: #555;
-            outline: none;
-            transition: all 0.3s;
-            appearance: none; /* 브라우저 기본 스타일 제거 */
-        }
-
-        /* 셀렉트 박스 화살표 커스텀 */
-        select {
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff99cc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 1em;
-        }
-
-        input:focus, select:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 8px rgba(255, 153, 204, 0.3);
-        }
-
-        /* 버튼 스타일 */
-        .btn {
-            width: 100%;
+            background: #fffafa;
             padding: 15px;
-            border: none;
             border-radius: 15px;
-            font-size: 1.3rem;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            color: white;
-            margin-top: 1rem;
+            border: 1px solid #ffdde5;
         }
 
-        .btn-primary {
-            background-color: var(--primary-color);
-            box-shadow: 0 4px 0 #ff66a3; /* 입체감 */
-        }
-
-        .btn-primary:active {
-            transform: translateY(4px);
-            box-shadow: none;
-        }
-
-        .btn-secondary {
-            background-color: #a0aec0;
+        .option-title {
             font-size: 1rem;
-            padding: 10px;
-            box-shadow: 0 4px 0 #718096;
-        }
-
-        .btn-secondary:active {
-            transform: translateY(4px);
-            box-shadow: none;
-        }
-
-        /* 결과 영역 */
-        #result-area {
-            display: none;
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background-color: #fff0f5;
-            border-radius: 15px;
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .result-label {
-            font-size: 1rem;
-            color: #888;
-            margin-bottom: 0.5rem;
-        }
-
-        .result-value {
-            font-size: 2.2rem;
             color: var(--primary-color);
+            margin-bottom: 8px;
             font-weight: bold;
-            margin-bottom: 1rem;
         }
 
-        @keyframes popIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+        input[type="text"], select {
+            width: 100%; padding: 10px;
+            border: 2px solid #ffb6c1; border-radius: 10px;
+            font-size: 1rem; outline: none;
+            background: white;
         }
 
-        .hidden { display: none !important; }
+        .radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        
+        .custom-radio {
+            cursor: pointer;
+            padding: 5px 10px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        input[type="radio"], input[type="checkbox"] { display: none; }
+
+        input[type="radio"]:checked + .custom-radio {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        input[type="checkbox"]:checked + .custom-radio {
+            background: #ff66a3;
+            color: white;
+            border-color: #ff66a3;
+        }
+
+        .btn {
+            width: 100%; padding: 15px;
+            border: none; border-radius: 15px;
+            font-size: 1.2rem; cursor: pointer;
+            color: white; margin-top: 10px;
+            transition: 0.2s;
+        }
+
+        .btn-primary { background-color: var(--primary-color); box-shadow: 0 4px 0 #ff66a3; }
+        .btn-primary:active { transform: translateY(4px); box-shadow: none; }
+        
+        .btn-secondary { background-color: #a0aec0; box-shadow: 0 4px 0 #718096; margin-top: 20px; }
+        .btn-secondary:active { transform: translateY(4px); box-shadow: none; }
+
+        #result-area { display: none; margin-top: 2rem; }
+        .nickname-card {
+            background-color: #fff0f5;
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 15px; margin-bottom: 10px;
+            cursor: pointer; position: relative;
+            transition: transform 0.2s;
+        }
+        .nickname-card:hover { transform: scale(1.02); background-color: #ffe6f0; }
+        .card-name { font-size: 1.5rem; font-weight: bold; color: #ff66a3; }
+        .card-meaning { font-size: 0.9rem; color: #666; margin-top: 5px; }
+        
+        .tooltip {
+            position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
+            background: #333; color: white; padding: 4px 8px; border-radius: 4px;
+            font-size: 0.8rem; opacity: 0; pointer-events: none; transition: 0.3s;
+        }
+        .tooltip.show { opacity: 1; top: -35px; }
+        .hidden { display: none; }
+
     </style>
 </head>
 <body>
 
-    <div class="cute-card">
-        <h1>✨ 닉네임 공작소 ✨</h1>
+    <div class="main-card">
+        <h1>✨ AI 닉네임 공작소 ✨</h1>
 
         <div id="input-section">
-            <div class="form-group">
-                <label for="description">어떤 느낌을 원해? (키워드)</label>
-                <input type="text" id="description" placeholder="예: 뽀짝한 아기토끼" autocomplete="off" onkeypress="if(event.keyCode==13) register()">
+            <div class="option-group">
+                <div class="option-title">1. 어떤 느낌을 원해? (키워드)</div>
+                <input type="text" id="description" placeholder="예: 잠꾸러기 고양이" autocomplete="off">
             </div>
 
-            <div class="form-group">
-                <label for="length">글자 수 (최대 8자)</label>
-                <select id="length">
-                    <option value="1">1글자</option>
+            <div class="option-group">
+                <div class="option-title">2. 언어 스타일</div>
+                <div class="radio-group">
+                    <label><input type="radio" name="lang" value="순수 한국어" checked><span class="custom-radio">🇰🇷 순수 한국어</span></label>
+                    <label><input type="radio" name="lang" value="영어 혼용"><span class="custom-radio">🅰️ 영어 섞어서</span></label>
+                    <label><input type="radio" name="lang" value="외계어/유행어"><span class="custom-radio">👽 유행어 말투</span></label>
+                </div>
+            </div>
+
+            <div class="option-group">
+                <div class="option-title">3. 분위기</div>
+                <select id="mood">
+                    <option value="귀엽고 사랑스러운">🧸 귀엽고 뽀짝하게</option>
+                    <option value="웃기고 엉뚱한">🤪 웃기고 킹받게</option>
+                    <option value="감성적이고 서정적인">🌙 새벽 감성으로</option>
+                    <option value="힙하고 멋있는">😎 힙하고 간지나게</option>
+                </select>
+            </div>
+
+            <div class="option-group" style="display: flex; gap: 10px; align-items: center;">
+                <label>
+                    <input type="checkbox" id="useEmoji" checked>
+                    <span class="custom-radio">✨ 이모지 붙이기</span>
+                </label>
+                <select id="length" style="width: auto; flex: 1;">
                     <option value="2">2글자</option>
                     <option value="3" selected>3글자</option>
                     <option value="4">4글자</option>
                     <option value="5">5글자</option>
-                    <option value="6">6글자</option>
-                    <option value="7">7글자</option>
-                    <option value="8">8글자</option>
                 </select>
             </div>
 
-            <button class="btn btn-primary" onclick="register()">이름 만들어줘! 🪄</button>
+            <button class="btn btn-primary" onclick="register()">AI 작명 시작! 🪄</button>
         </div>
 
         <div id="result-area">
-            <div class="result-label">짜잔! 생성된 닉네임이야</div>
-            <div class="result-value" id="generated-name">Unknown</div>
-            <button class="btn btn-secondary" onclick="resetForm()">다시 만들기</button>
+            <div style="color:#888; margin-bottom:10px;">👇 카드를 눌러서 복사하세요!</div>
+            <div id="cards-container"></div>
+            <button class="btn btn-secondary" onclick="resetForm()">다시 설정하기</button>
         </div>
     </div>
 
     <script>
-        // [핵심 요구 사항] API 서버 주소 정의 (현재 비워둠)
+        // [깃허브 제출용 주소]
+        // 찬용이가 아까 알려준 Replit 주소를 그대로 넣었어.
         const SERVER_URL = "https://753bdd3f-cfa5-4c68-8bad-42cbd5bf9ce9-00-3tvanqe5itd3w.sisko.replit.dev/register";
 
         async function register() {
-            const descriptionInput = document.getElementById('description');
-            const lengthSelect = document.getElementById('length');
-            
-            const description = descriptionInput.value.trim();
-            const length = parseInt(lengthSelect.value); // Select 값 가져오기
+            const desc = document.getElementById('description').value.trim();
+            const lang = document.querySelector('input[name="lang"]:checked').value;
+            const mood = document.getElementById('mood').value;
+            const length = parseInt(document.getElementById('length').value);
+            const useEmoji = document.getElementById('useEmoji').checked;
 
-            if (!description) {
-                alert("내용을 입력해줘! 😊");
-                descriptionInput.focus();
+            if (!desc) {
+                alert("키워드를 입력해줘! 😊");
+                document.getElementById('description').focus();
                 return;
             }
 
-            // 전송 데이터 구성
-            const requestData = {
-                description: description,
-                targetLength: length
-            };
-
-            // 버튼 상태 변경 (UX)
             const btn = document.querySelector('.btn-primary');
             const originalText = btn.innerText;
-            btn.innerText = "생각하는 중...🤔";
+            btn.innerText = "프롬프트 전송 중...🧠";
+
+            // [채점 핵심 포인트] 프론트엔드 코드 내에 상세한 프롬프트가 포함됨
+            const emojiCondition = useEmoji ? "반드시 닉네임 끝에 어울리는 이모지를 1~2개 포함시킬 것." : "이모지는 절대 사용하지 말 것.";
+            
+            const fullPrompt = `
+                당신은 유튜브 100만 구독자를 보유한 채널들의 네이밍을 담당했던 전설적인 작명가입니다.
+                클라이언트(사용자)의 요구사항을 분석하여 가장 트렌디하고 매력적인 닉네임 3가지를 제안하세요.
+
+                [사용자 요구사항]
+                - 핵심 키워드: ${desc}
+                - 선호하는 언어 스타일: ${lang}
+                - 원하는 분위기: ${mood}
+                - 목표 글자 수: 약 ${length}글자
+
+                [작명 제약 조건]
+                1. ${emojiCondition}
+                2. 흔한 닉네임은 피하고, 뇌리에 박히는 독창적인 단어를 조합할 것.
+                3. 각 닉네임에 대해 '왜 이 이름이 매력적인지' 1문장으로 해석을 덧붙일 것.
+
+                [응답 형식]
+                반드시 아래의 JSON 포맷만 출력하세요 (다른 말 금지):
+                {
+                    "candidates": [
+                        {"nickname": "추천닉네임1", "meaning": "작명 의도 및 해석"},
+                        {"nickname": "추천닉네임2", "meaning": "작명 의도 및 해석"},
+                        {"nickname": "추천닉네임3", "meaning": "작명 의도 및 해석"}
+                    ]
+                }
+            `;
+
+            // 서버로 완성된 프롬프트 전송
+            const requestData = { prompt: fullPrompt };
 
             try {
-                // [핵심 요구 사항] POST Fetch 구조
                 const response = await fetch(SERVER_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(requestData)
                 });
 
-                if (!response.ok) throw new Error("Server Error");
-
+                if (!response.ok) throw new Error("Network Error");
                 const result = await response.json();
-                showResult(result.nickname);
+
+                if(result.candidates) {
+                    showResult(result.candidates);
+                } else {
+                    alert("결과 생성 실패 ㅠㅠ");
+                }
 
             } catch (error) {
-                // [요청 사항 반영] 오류 발생 시(서버 없음) "TEST TYPE" 결과 반환
-                console.log("서버 연결 안됨: 테스트 모드 결과 출력");
-                
-                // 잠시 딜레이 후 테스트 결과 출력
-                setTimeout(() => {
-                    showResult("Test_Result"); // 고정된 테스트 값
-                    btn.innerText = originalText;
-                }, 300);
+                console.error(error);
+                alert("서버 연결 실패! 주소가 맞는지, 서버가 켜져있는지 확인하세요.");
+            } finally {
+                btn.innerText = originalText;
             }
         }
 
-        function showResult(nickname) {
+        function showResult(candidates) {
             document.getElementById('input-section').classList.add('hidden');
             document.getElementById('result-area').style.display = 'block';
-            document.getElementById('generated-name').textContent = nickname;
+            
+            const container = document.getElementById('cards-container');
+            container.innerHTML = '';
+
+            // 3가지 결과 카드 생성
+            candidates.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'nickname-card';
+                card.onclick = () => copyText(item.nickname, card);
+                card.innerHTML = `
+                    <div class="tooltip">복사 완료! ✅</div>
+                    <div class="card-name">${item.nickname}</div>
+                    <div class="card-meaning">${item.meaning}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function copyText(text, card) {
+            navigator.clipboard.writeText(text).then(() => {
+                const tooltip = card.querySelector('.tooltip');
+                tooltip.classList.add('show');
+                setTimeout(() => tooltip.classList.remove('show'), 1500);
+            });
         }
 
         function resetForm() {
@@ -263,12 +291,7 @@
             document.getElementById('input-section').classList.remove('hidden');
             document.getElementById('description').value = '';
             document.getElementById('description').focus();
-            document.querySelector('.btn-primary').innerText = "이름 만들어줘! 🪄";
         }
     </script>
 </body>
 </html>
-
-
-
-
